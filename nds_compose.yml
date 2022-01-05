@@ -1,0 +1,74 @@
+version: '3.8'
+services:
+  nds_app:
+    build:
+      context: nds_app
+      dockerfile: Dockerfile
+    image: nds/app
+    ports:
+      - "10.0.0.11:80:80"
+    depends_on:
+      - nds_api
+    networks:
+      - nds_base_net
+
+  nds_api:
+    build:
+      context: nds_api
+      dockerfile: src/main/docker/Dockerfile.native
+    image: nds/api:native
+    ports:
+      - "10.0.0.13:80:8080"
+    depends_on:
+      main_db:
+        condition: service_healthy
+    networks:
+      - nds_base_net
+
+  main_db:
+    image: postgres
+    volumes:
+      - main_db_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "5555:5432"
+    networks:
+      - nds_base_net
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: keycloak:84df5ee8d31a,nds:522e9927781f
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: 123
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d root" ]
+      interval: 5s
+      timeout: 10s
+      retries: 6
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: main_db
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: 84df5ee8d31a
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - "10.0.0.12:80:80"
+    depends_on:
+      main_db:
+        condition: service_healthy
+    networks:
+      - nds_base_net
+    command: ["-Djboss.http.port=80"]
+
+networks:
+  nds_base_net:
+    driver: bridge
+
+
+volumes:
+  main_db_data:
+    driver: local
