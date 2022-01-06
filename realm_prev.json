@@ -687,7 +687,7 @@
         "id.token.claim" : "true",
         "access.token.claim" : "true",
         "claim.name" : "firstName",
-        "jsonType.label" : "String"
+        "jsonType.label" : "JSON"
       }
     } ],
     "defaultClientScopes" : [ "web-origins", "profile", "roles", "email" ],
