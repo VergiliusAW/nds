@@ -1,7 +1,11 @@
 package ru.aquarel.resources;
 
+import io.quarkus.oidc.IdToken;
+import io.quarkus.security.identity.SecurityIdentity;
 import io.vertx.core.json.JsonObject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.KeycloakDeployment;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -18,6 +22,9 @@ import javax.ws.rs.core.Response;
 public class DemoResource {
 
     @Inject
+    SecurityIdentity securityIdentity;
+
+    @Inject
     JsonWebToken jsonWebToken;
 
     @GET
@@ -25,8 +32,10 @@ public class DemoResource {
     @RolesAllowed("nds_user")
     public Response demo() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.put("Имя",jsonWebToken.getClaim("given_name"));
-        jsonObject.put("Фамилия",jsonWebToken.getClaim("family_name"));
+        jsonObject.put("name",jsonWebToken.getClaim("given_name"));
+        jsonObject.put("surname",jsonWebToken.getClaim("family_name"));
+        jsonObject.put("id",jsonWebToken.getSubject());
+
         return Response.ok(jsonObject).build();
     }
 }
