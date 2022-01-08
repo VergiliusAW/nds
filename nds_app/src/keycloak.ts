@@ -1,8 +1,8 @@
 import Keycloak from "keycloak-js";
 import config from "./config";
 const keycloak = Keycloak({
-    url: "http://keycloak.aquarel.ru/auth",
-    realm: "nds_realm",
+    url: config.keycloak.URL,
+    realm: config.keycloak.REALM,
     clientId: config.keycloak.CLIENT_ID,
 });
 

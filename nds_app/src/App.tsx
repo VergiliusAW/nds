@@ -1,5 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useKeycloak} from "@react-keycloak/web";
+import config from "./config";
 
 interface IData {
     name: string
@@ -43,6 +44,8 @@ const App: FC = () => {
 
     return (
         <div className="App">
+            process.env.REACT_APP_STAGE = {process.env.REACT_APP_STAGE}
+            id= {config.keycloak.CLIENT_ID}
             {!keycloak.authenticated && (
                 <button
                     type="button"
