@@ -1,5 +1,7 @@
 package ru.aquarel.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "user_info")
-public class UserInfoEntity {
+public class UserInfo {
 
     @Id
     @Getter
@@ -29,5 +31,6 @@ public class UserInfoEntity {
     @Getter
     @Setter
     @OneToOne(mappedBy = "userInfo")
-    private UsersEntity user;
+    @JsonIgnore
+    private Users user;
 }

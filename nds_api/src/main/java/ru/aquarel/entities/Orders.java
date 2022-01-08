@@ -1,17 +1,20 @@
 package ru.aquarel.entities;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 import ru.aquarel.enums.OrderStatus;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "orders")
-public class OrdersEntity {
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id"
+//)
+public class Orders {
 
     @Id
     @Getter
@@ -48,7 +51,8 @@ public class OrdersEntity {
             joinColumns = {@JoinColumn(name = "id_order", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "id_goods", referencedColumnName = "id")}
     )
-    private List<GoodsEntity> goodsList;
+    @JsonIgnore
+    private Set<Goods> goods = new HashSet<>();
 
     /**
      * Связь многие к одному с таблицей stores_warehouses для поля id_warehouse_in
@@ -57,7 +61,7 @@ public class OrdersEntity {
     @Setter
     @ManyToOne
     @JoinColumn(name = "id_warehouse_in", referencedColumnName = "id")
-    private StoresWarehousesEntity warehouseIn;
+    private StoresWarehouses warehouseIn;
 
     /**
      * Связь многие к одному с таблицей stores_warehouses для поля id_warehouse_out
@@ -66,6 +70,6 @@ public class OrdersEntity {
     @Setter
     @ManyToOne
     @JoinColumn(name = "id_warehouse_out", referencedColumnName = "id")
-    private StoresWarehousesEntity warehouseOut;
+    private StoresWarehouses warehouseOut;
 
 }

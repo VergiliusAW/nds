@@ -1,17 +1,22 @@
 package ru.aquarel.entities;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "stores_warehouses")
-public class StoresWarehousesEntity {
+public class StoresWarehouses {
 
-    @Id @Getter @Setter
+    @Id
+    @Getter
+    @Setter
     private UUID id;
 
     /**
@@ -20,7 +25,8 @@ public class StoresWarehousesEntity {
     @Getter
     @Setter
     @OneToMany(mappedBy = "warehouseIn")
-    private List<OrdersEntity> ordersListIn;
+    @JsonIgnore
+    private Set<Orders> ordersIn = new HashSet<>();
 
     /**
      * Связь один к многим с таблицей orders
@@ -28,10 +34,12 @@ public class StoresWarehousesEntity {
     @Getter
     @Setter
     @OneToMany(mappedBy = "warehouseOut")
-    private List<OrdersEntity> ordersListOut;
+    @JsonIgnore
+    private Set<Orders> ordersOut = new HashSet<>();
 
     @Getter
     @Setter
     @OneToOne(mappedBy = "warehouse")
-    private StoresEntity store;
+    @JsonIgnore
+    private Stores store;
 }
