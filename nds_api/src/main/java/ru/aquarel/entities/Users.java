@@ -1,6 +1,5 @@
 package ru.aquarel.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 

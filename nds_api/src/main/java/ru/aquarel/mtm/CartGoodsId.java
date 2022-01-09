@@ -22,10 +22,12 @@ public class CartGoodsId implements Serializable {
         this.goods_id = goods_id;
     }
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private Long cart_id;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private UUID goods_id;
 
 }

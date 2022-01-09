@@ -3,7 +3,6 @@ package ru.aquarel.mtm;
 import lombok.Getter;
 import lombok.Setter;
 import ru.aquarel.entities.Cart;
-import ru.aquarel.entities.Goods;
 import ru.aquarel.entities.GoodsLabels;
 
 import javax.persistence.*;

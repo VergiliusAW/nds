@@ -1,19 +1,20 @@
 package ru.aquarel.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.aquarel.enums.OrderStatus;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id"
-//)
 public class Orders {
 
     @Id
@@ -33,11 +34,13 @@ public class Orders {
     @Getter
     @Setter
     @Temporal(TemporalType.DATE)
+    @CreationTimestamp
     private Date creation_date;
 
     @Getter
     @Setter
     @Temporal(TemporalType.DATE)
+    @UpdateTimestamp
     private Date last_change_date;
 
     /**

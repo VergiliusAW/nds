@@ -1,12 +1,11 @@
 package ru.aquarel.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -42,4 +41,10 @@ public class StoresWarehouses {
     @OneToOne(mappedBy = "warehouse")
     @JsonIgnore
     private Stores store;
+
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "warehouse")
+    @JsonIgnore
+    private Set<Goods> goods;
 }

@@ -1,12 +1,11 @@
 package ru.aquarel.entities;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,4 +36,10 @@ public class Goods {
     @ManyToMany(mappedBy = "goods")
     @JsonIgnore
     private Set<Orders> orders = new HashSet<>();
+
+    @Getter
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "id_warehouse", referencedColumnName = "id")
+    private StoresWarehouses warehouse;
 }
