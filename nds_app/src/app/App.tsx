@@ -1,6 +1,8 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useKeycloak} from "@react-keycloak/web";
-import config from "./config";
+import config from "../config";
+import Top from "../components/Top";
+import NdsGoods from "./NdsGoods";
 
 interface IData {
     name: string
@@ -36,40 +38,16 @@ const App: FC = () => {
             console.log("error", error);
         }
     };
-    useEffect(() => {
-        if (keycloak.token !== undefined)
-            req()
-    },[keycloak.token])
+    // useEffect(() => {
+    //     if (keycloak.token !== undefined)
+    //         req()
+    // },[keycloak.token])
 
 
     return (
-        <div className="App">
-            process.env.REACT_APP_STAGE = {process.env.REACT_APP_STAGE}
-            id= {config.keycloak.CLIENT_ID}
-            {!keycloak.authenticated && (
-                <button
-                    type="button"
-                    onClick={() => keycloak.login()}
-                >
-                    Login
-                </button>
-            )}
-
-            {!!keycloak.authenticated && (
-                <button
-                    type="button"
-                    onClick={() => keycloak.logout()}
-                >
-                    Logout (
-                    {
-                        data?.surname + " " + data?.name
-                        // keycloak.token
-                    } {
-
-                })
-                </button>
-            )}
-
+        <div>
+            <Top/>
+            <NdsGoods/>
         </div>
     );
 }

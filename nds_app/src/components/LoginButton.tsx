@@ -4,6 +4,8 @@ import {useKeycloak} from "@react-keycloak/web";
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import {LocalAtm} from "@mui/icons-material";
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 
 interface IUser {
     givenName: string
@@ -11,7 +13,6 @@ interface IUser {
 }
 
 const LoginButton: FC = () => {
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: any) => {
@@ -20,7 +21,6 @@ const LoginButton: FC = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-
     const {keycloak} = useKeycloak()
     const [user, setUser] = useState<IUser>({givenName: "", familyName: ""})
     useEffect(() => {
@@ -30,8 +30,29 @@ const LoginButton: FC = () => {
                 familyName: keycloak.tokenParsed.family_name
             }
             setUser(user)
+            console.log(keycloak.tokenParsed)
         }
     }, [keycloak.authenticated])
+
+    const settingsHandle = () => {
+        window.location.replace("/settings")
+    }
+
+    const adminHandle = () => {
+        window.location.replace("/admin")
+    }
+
+    const warehouseHandle = () => {
+        window.location.replace("/warehouse")
+    }
+
+    const storeHandle = () => {
+        window.location.replace("/store")
+    }
+
+    const ordersHandle = () => {
+        window.location.replace("/orders")
+    }
     return (
         <div>
             {!keycloak.authenticated && (
@@ -87,18 +108,65 @@ const LoginButton: FC = () => {
                         transformOrigin={{horizontal: 'right', vertical: 'top'}}
                         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                     >
-                        <MenuItem>
-                            <ListItemIcon>
-                                <LocalAtm fontSize="small"/>
-                            </ListItemIcon>
-                            Заказы
-                        </MenuItem>
-                        <MenuItem>
-                            <ListItemIcon>
-                                <Settings fontSize="small"/>
-                            </ListItemIcon>
-                            Настройки
-                        </MenuItem>
+                        {   //@ts-ignore
+                            (!keycloak.tokenParsed.realm_access.roles.includes("nds_god")
+                                //@ts-ignore
+                                && !keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager")
+                                //@ts-ignore
+                                && !keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager")) && (
+                                <MenuItem onClick={ordersHandle}>
+                                    <ListItemIcon>
+                                        <LocalAtm fontSize="small"/>
+                                    </ListItemIcon>
+                                    Заказы
+                                </MenuItem>
+
+                            )
+                        }
+                        {   //@ts-ignore
+                            (!keycloak.tokenParsed.realm_access.roles.includes("nds_god")
+                                //@ts-ignore
+                                && !keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager")
+                                //@ts-ignore
+                                && !keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager")) && (
+                                <MenuItem onClick={settingsHandle}>
+                                    <ListItemIcon>
+                                        <Settings fontSize="small"/>
+                                    </ListItemIcon>
+                                    Настройки
+                                </MenuItem>
+                            )
+                        }
+                        {   //@ts-ignore
+                            keycloak.tokenParsed.realm_access.roles.includes("nds_god") && (
+                                <MenuItem onClick={adminHandle}>
+                                    <ListItemIcon>
+                                        <LocalAtm fontSize="small"/>
+                                    </ListItemIcon>
+                                    Админка
+                                </MenuItem>
+                            )
+                        }
+                        {   //@ts-ignore
+                            keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager") && (
+                                <MenuItem onClick={storeHandle}>
+                                    <ListItemIcon>
+                                        <LocationCityIcon fontSize="small"/>
+                                    </ListItemIcon>
+                                    Магазин
+                                </MenuItem>
+                            )
+                        }
+                        {   //@ts-ignore
+                            keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager") && (
+                                <MenuItem onClick={warehouseHandle}>
+                                    <ListItemIcon>
+                                        <WarehouseIcon fontSize="small"/>
+                                    </ListItemIcon>
+                                    Склад
+                                </MenuItem>
+                            )
+                        }
                         <MenuItem onClick={() => keycloak.logout()}>
                             <ListItemIcon>
                                 <Logout fontSize="small"/>

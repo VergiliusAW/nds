@@ -1,5 +1,6 @@
 package ru.aquarel.resources.v1;
 
+import io.vertx.core.json.JsonObject;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import ru.aquarel.entities.Cart;
 import ru.aquarel.entities.GoodsLabels;
@@ -110,6 +111,11 @@ public class CartResourceV1 {
         return Response.ok(cartGoods).build();
     }
 
+    /**
+     * Получить все товары в корзине
+     *
+     * @return все товары
+     */
     @GET
     @Path("/all")
     @Transactional
@@ -155,6 +161,31 @@ public class CartResourceV1 {
         }
         entityManager.flush();
         return Response.ok(goods).build();
+    }
+
+    /**
+     * Получить количество товаров в корзине
+     *
+     * @return количество
+     */
+    @GET
+    @Path("/goods/count")
+    @Transactional
+    public Response getCartGoodsCount() {
+        var user = getUserFromSubject(accessToken.getSubject());
+        var userCartId = user.getCart().getId();
+
+        var cartGoods = entityManager
+                .createQuery("select c from CartGoods c where c.cart.id = ?1", CartGoods.class)
+                .setParameter(1, userCartId)
+                .getResultList();
+        var count = 0;
+        for (CartGoods cg : cartGoods) {
+            count += cg.getCount_goods();
+        }
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put("count", count);
+        return Response.ok(count).build();
     }
 
     /**

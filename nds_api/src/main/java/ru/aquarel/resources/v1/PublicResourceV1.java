@@ -1,10 +1,12 @@
 package ru.aquarel.resources.v1;
 
 import io.vertx.core.json.JsonObject;
+import ru.aquarel.entities.Categories;
 import ru.aquarel.entities.Goods;
 import ru.aquarel.entities.GoodsLabels;
 import ru.aquarel.entities.Stores;
 
+import javax.annotation.security.PermitAll;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Path("/api/v1/public")
+@PermitAll
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PublicResourceV1 {
@@ -123,5 +126,18 @@ public class PublicResourceV1 {
         JsonObject count = new JsonObject();
         count.put("available_count", goods.size());
         return Response.ok(count).build();
+    }
+
+    /**
+     * Получить все категории
+     *
+     * @return категории
+     */
+    @GET
+    @Path("/categories/all")
+    @Transactional
+    public Response getAllCategories() {
+        var categories = entityManager.createQuery("select c from Categories c", Categories.class).getResultList();
+        return Response.ok(categories).build();
     }
 }
