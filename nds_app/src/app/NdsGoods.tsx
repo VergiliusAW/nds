@@ -33,7 +33,6 @@ const NdsGoods: FC = () => {
     const {keycloak} = useKeycloak()
     const [goods, setGoods] = useState<Goods[]>()
     const [categories, setCategories] = useState<ICategories[]>()
-    const [expandedId, setExpandedId] = useState("");
     //получение все видов товаров с сервера
     const fetchGoods = async () => {
         const pr = new URLSearchParams();
@@ -94,14 +93,6 @@ const NdsGoods: FC = () => {
     }, [categories])
 
     /**
-     *
-     * @param id
-     */
-    const handleExpand = (id: string) => {
-        setExpandedId(id);
-    }
-
-    /**
      * выбрать категорию
      * @param c категория
      */
@@ -114,7 +105,7 @@ const NdsGoods: FC = () => {
             cat[idx] = sc
             setCategories(cat)
         }
-    }
+    }   
 
     /**
      * ве-селект категрии
@@ -132,19 +123,13 @@ const NdsGoods: FC = () => {
     }
 
     return (
-        <ClickAwayListener
-            mouseEvent="onMouseDown"
-            touchEvent="onTouchStart"
-            onClickAway={() => {
-                setExpandedId("")
-            }}
-        >
+
             <Grid container sx={{mt: "64px"}} spacing={2}>
-                <Grid item xs={1} onClick={() => setExpandedId("")}/>
+                <Grid item xs={1} />
                 {
                     //Категории товаров
                 }
-                <Grid item xs={2} justifyContent="right" alignItems="center" onClick={() => setExpandedId("")}>
+                <Grid item xs={2} justifyContent="right" alignItems="center">
                     <Grid container spacing={1}>
                         {categories?.map((c, index) => {
                             return (
@@ -174,7 +159,7 @@ const NdsGoods: FC = () => {
                     <Stack>
                         {goods?.map((g, index) => {
                             return (index % 2 === 0 ?
-                                    <GoodsMapItem key={g.id} g={g} expandedId={expandedId} handleExpand={handleExpand}/>
+                                    <GoodsMapItem key={g.id} g={g} />
                                     : null
                             )
 
@@ -188,16 +173,15 @@ const NdsGoods: FC = () => {
                     <Stack>
                         {goods?.map((g, index) => {
                             return (index % 2 !== 0 ?
-                                    <GoodsMapItem key={g.id} g={g} expandedId={expandedId} handleExpand={handleExpand}/>
+                                    <GoodsMapItem key={g.id} g={g} />
                                     : null
                             )
 
                         })}
                     </Stack>
                 </Grid>
-                <Grid item xs={1} onClick={() => setExpandedId("")}/>
+                <Grid item xs={1} />
             </Grid>
-        </ClickAwayListener>
     )
 }
 

@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 import java.util.UUID;
 
 @Path("/api/v1/cart")
-@RolesAllowed("nds_user")
+@RolesAllowed({"nds_user","nds_store_manager"})
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CartResourceV1 {

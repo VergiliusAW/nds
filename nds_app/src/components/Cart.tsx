@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useCallback, useEffect} from "react";
 import {IconButton} from "@mui/material";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import config from "../config";
 import {setState} from "../redux/cartCountSlice";
 import {useKeycloak} from "@react-keycloak/web";
+import {isNumber} from "util";
 
 /**
  * Отображается только когда клиент вошел в свой аккаунт
@@ -30,7 +31,7 @@ const Cart: FC = () => {
         window.location.replace("/cart")
     }
 
-    const fetchCartCount = async () => {
+    const fetchCount = useCallback(async () => {
         const url = config.api.HOST + "/api/v1/cart/goods/count"
         try {
             const response = await fetch(url, {
@@ -42,17 +43,22 @@ const Cart: FC = () => {
                 },
             });
             const json = await response.json();
-            console.log(json);
-            dispatch(setState(json))
+            // console.log(json); //TODO: log count cart
+            if (json > 0)
+                dispatch(setState(json))
+            else {
+                console.log(json)
+                dispatch(setState(0))
+            }
         } catch
             (error) {
             console.log("error", error);
         }
-    }
+    }, [count]) // if count changes, useEffect will run again
 
     useEffect(() => {
-        fetchCartCount()
-    }, [count])
+        fetchCount()
+    }, [fetchCount])
 
     return (
         <IconButton aria-label="cart" onClick={handleCart}>

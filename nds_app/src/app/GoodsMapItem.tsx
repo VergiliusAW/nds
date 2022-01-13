@@ -9,8 +9,6 @@ import {increment} from "../redux/cartCountSlice";
 
 interface IGoodsMapItem {
     g: Goods
-    expandedId: string
-    handleExpand: (id: string) => void
 }
 
 const Div = styled('div')(({theme}) => ({
@@ -96,9 +94,16 @@ const GoodsMapItem: FC<IGoodsMapItem> = ({g}) => {
                     <CardContent>
                         <Div>{"Цена: " + g.price + " у.е."}</Div>
                     </CardContent>
-                    <CardActions>
-                        <Button size="small" onClick={handleBuy}>Купить</Button>
-                    </CardActions>
+                    {(!!keycloak.authenticated &&
+                        //@ts-ignore
+                        !keycloak.tokenParsed.realm_access.roles.includes("nds_god")
+                        //@ts-ignore
+                        && !keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager") && (
+                            <CardActions>
+                                <Button size="small" onClick={handleBuy}>Купить</Button>
+                            </CardActions>
+                        )
+                    )}
                 </Collapse>
             </Card>
         </Grid>

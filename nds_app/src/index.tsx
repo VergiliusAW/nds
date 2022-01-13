@@ -12,7 +12,7 @@ import {
 import Settings from "./settings/Settings";
 import Admin from "./admin/Admin";
 import Store from "./store/Store";
-import Order from "./order/Order";
+import Orders from "./order/Orders";
 import Warehouse from "./warehouse/Warehouse";
 import CartPage from "./cart/CartPage";
 import {Provider} from "react-redux";
@@ -28,7 +28,7 @@ ReactDOM.render(
                         <Route path="settings" element={<Settings/>}/>
                         <Route path="admin" element={<Admin/>}/>
                         <Route path="store" element={<Store/>}/>
-                        <Route path="orders" element={<Order/>}/>
+                        <Route path="orders" element={<Orders/>}/>
                         <Route path="warehouse" element={<Warehouse/>}/>
                         <Route path="cart" element={<CartPage/>}/>
                     </Routes>

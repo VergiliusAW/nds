@@ -74,6 +74,35 @@ public class StoresResourceV1 {
     }
 
     /**
+     * Получить магазин для администратора
+     *
+     * @return store
+     */
+    @GET
+    @Path("/store")
+    @Transactional
+    public Response getStore() {
+        var store = entityManager.createQuery("select s from Stores s where s = :m_id", Stores.class).setParameter("m_id", UUID.fromString(jsonWebToken.getSubject())).getSingleResult();
+        return Response.ok(store).build();
+    }
+
+    /**
+     * Получить заказ по id
+     *
+     * @param id_order id заказа
+     * @return заказ
+     */
+    @GET
+    @Path("/order/get")
+    @Transactional
+    public Response getOrderById(@QueryParam("id_order") UUID id_order) {
+        var order = entityManager.find(Orders.class, id_order);
+        if (order.getStatus() == OrderStatus.READY_TO_ISSUE)
+            return Response.ok(order).build();
+        return Response.ok("Нет").build();
+    }
+
+    /**
      * Продать товар оффлайн клиенту
      * Созаётся заказ с null значением скалада-назначения
      *

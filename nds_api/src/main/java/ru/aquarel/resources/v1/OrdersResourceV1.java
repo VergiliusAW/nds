@@ -115,6 +115,7 @@ public class OrdersResourceV1 {
      */
     @GET
     @Path("/order/goods")
+    @RolesAllowed({"nds_user", "nds_warehouse_manager", "nds_store_manager"})
     @Transactional
     public Response getOrderGoods(@QueryParam("id_order") UUID id_order) {
         var goods = entityManager.find(Orders.class, id_order).getGoods();

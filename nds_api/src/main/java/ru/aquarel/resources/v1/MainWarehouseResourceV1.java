@@ -8,10 +8,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Set;
@@ -52,6 +49,42 @@ public class MainWarehouseResourceV1 {
     }
 
     /**
+     * Получить все новые заказы для конкретного магазина
+     *
+     * @param id_store id_store
+     * @return заказ готовый к отправке
+     */
+    @GET
+    @Path("/orders/store/new")
+    @Transactional
+    public Response getOrdersForStore(@QueryParam("id_store") UUID id_store) {
+        var store = entityManager.find(Stores.class, id_store);
+        var a = entityManager.createQuery("select o from Orders o where o.warehouseIn = :id_ws and o.status = :status")
+                .setParameter("id_ws", store.getWarehouse())
+                .setParameter("status", OrderStatus.NEW)
+                .getResultList();
+        return Response.ok(a).build();
+    }
+
+    /**
+     * Получить все готовые к отправке заказы для конкретного магазина
+     *
+     * @param id_store id_store
+     * @return отправленный заказ
+     */
+    @GET
+    @Path("/orders/store/ready")
+    @Transactional
+    public Response getReadyToShipmentOrdersToStore(@QueryParam("id_store") UUID id_store) {
+        var store = entityManager.find(Stores.class, id_store);
+        var a = entityManager.createQuery("select o from Orders o where o.warehouseIn = :id_ws and o.status = :status")
+                .setParameter("id_ws", store.getWarehouse())
+                .setParameter("status", OrderStatus.READY_TO_SHIPMENT)
+                .getResultList();
+        return Response.ok(a).build();
+    }
+
+    /**
      * Отправить все заказы(готовые к отправке) в магазин
      *
      * @param store магазин-получатель
@@ -68,8 +101,10 @@ public class MainWarehouseResourceV1 {
         //Заказы доставляются с помощью телепорта, поэтому сразу же становятся доступны для выдачи
         //TODO: Сделать так, чтобы заказы возились с помощью транспортной компании
         orders.forEach(o -> o.setStatus(OrderStatus.READY_TO_ISSUE));
-        entityManager.merge(orders);
-        entityManager.flush();
+        orders.forEach(o -> {
+            entityManager.merge(o);
+            entityManager.flush();
+        });
         return Response.ok(orders).build();
     }
 
