@@ -55,6 +55,9 @@ const UserInfoContainer: FC = () => {
         }
     }
 
+    /**
+     * Обновить информацию о пользователе
+     */
     const updateUserInfo = () => {
         postUserInfo(JSON.stringify(userInfo))
     }
