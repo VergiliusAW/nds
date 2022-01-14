@@ -67,15 +67,18 @@ const CartItem: FC<ICartItem> = ({item, store, index, handleChangeCount, handleR
     }
 
     useEffect(() => {
-        if (keycloak.realmAccess !== undefined) {
-            if (keycloak.realmAccess.roles.includes("nds_store_manager")) {
-                fetchAvailableStore()
-            } else {
-                fetchAvailablePublic()
+        if (store.id !== "")
+            if (keycloak.realmAccess !== undefined) {
+                if (keycloak.realmAccess.roles.includes("nds_store_manager")) {
+                    fetchAvailableStore()
+                } else {
+                    fetchAvailablePublic()
+
+                }
             }
-        }
 
     }, [store])
+
     return (
         <Card sx={{minWidth: 300, mb: 1.5}}>
             <CardContent>

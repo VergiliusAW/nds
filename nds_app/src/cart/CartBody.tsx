@@ -143,6 +143,9 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                 return value !== item;
             });
             setCart(filtered)
+            const s = store
+            setStore({id: "", address: ""})
+            setStore(s)
         }
     }
 
