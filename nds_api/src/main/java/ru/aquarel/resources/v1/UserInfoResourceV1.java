@@ -1,6 +1,7 @@
 package ru.aquarel.resources.v1;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import ru.aquarel.entities.Cart;
 import ru.aquarel.entities.UserInfo;
 import ru.aquarel.entities.Users;
 
@@ -54,10 +55,19 @@ public class UserInfoResourceV1 {
      */
     @GET
     @Path("/get")
+    @Transactional
     public Response getUserInfo() {
         var user = entityManager.find(Users.class, UUID.fromString(jsonWebToken.getSubject()));
+        //если пользователь не существует, то добавляем
         if (user == null) {
-            return Response.ok("Рано, пользователь ещё не сущетсвует").build();
+            user = new Users();
+            user.setId(UUID.fromString(jsonWebToken.getSubject()));
+            var cart = new Cart();
+            var info = new UserInfo();
+            user.setCart(cart);
+            user.setUserInfo(info);
+            entityManager.persist(user);
+            entityManager.flush();
         }
         return Response.ok(user.getUserInfo()).build();
     }
