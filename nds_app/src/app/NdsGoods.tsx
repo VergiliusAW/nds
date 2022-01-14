@@ -1,18 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
-import {
-    Chip,
-    Button,
-    CardContent,
-    Typography,
-    CardActions,
-    Toolbar,
-    Container,
-    Collapse,
-    ClickAwayListener, Grid, Stack
-} from "@mui/material";
+import {Chip, Grid, Stack} from "@mui/material";
 import config from "../config";
-import {useKeycloak} from "@react-keycloak/web";
-import {styled} from "@mui/material/styles";
 import GoodsMapItem from "./GoodsMapItem";
 
 export interface Goods {
@@ -22,7 +10,6 @@ export interface Goods {
     price: number
 }
 
-
 interface ICategories {
     id: number
     name: string
@@ -30,10 +17,11 @@ interface ICategories {
 }
 
 const NdsGoods: FC = () => {
-    const {keycloak} = useKeycloak()
     const [goods, setGoods] = useState<Goods[]>()
     const [categories, setCategories] = useState<ICategories[]>()
-    //получение все видов товаров с сервера
+    /**
+     * Получение все видов товаров с сервера
+     */
     const fetchGoods = async () => {
         const pr = new URLSearchParams();
         if (categories !== undefined) {
@@ -65,6 +53,9 @@ const NdsGoods: FC = () => {
         }
     }
 
+    /**
+     * Получить категории
+     */
     const fetchCategories = async () => {
         const url = config.api.HOST + "/api/v1/public/categories/all"
         try {
@@ -105,7 +96,7 @@ const NdsGoods: FC = () => {
             cat[idx] = sc
             setCategories(cat)
         }
-    }   
+    }
 
     /**
      * ве-селект категрии
@@ -124,64 +115,64 @@ const NdsGoods: FC = () => {
 
     return (
 
-            <Grid container sx={{mt: "64px"}} spacing={2}>
-                <Grid item xs={1} />
-                {
-                    //Категории товаров
-                }
-                <Grid item xs={2} justifyContent="right" alignItems="center">
-                    <Grid container spacing={1}>
-                        {categories?.map((c, index) => {
-                            return (
-                                <Grid key={c.id} item>
-                                    {!categories[index].select && (
-                                        <Chip label={c.name} variant="outlined" size="small" sx={{
-                                            bgcolor: "#FFF",
-                                            border: "none",
-                                            boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;"
-                                        }}
-                                              onClick={() => addCategory(c)}/>
-                                    )}
-                                    {!!categories[index].select && (
-                                        <Chip label={c.name} size="small"
-                                              sx={{boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;"}}
-                                              onDelete={() => rmCategory(c)}/>
-                                    )}
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
+        <Grid container sx={{mt: "64px"}} spacing={2}>
+            <Grid item xs={1}/>
+            {
+                //Категории товаров
+            }
+            <Grid item xs={2} justifyContent="right" alignItems="center">
+                <Grid container spacing={1}>
+                    {categories?.map((c, index) => {
+                        return (
+                            <Grid key={c.id} item>
+                                {!categories[index].select && (
+                                    <Chip label={c.name} variant="outlined" size="small" sx={{
+                                        bgcolor: "#FFF",
+                                        border: "none",
+                                        boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;"
+                                    }}
+                                          onClick={() => addCategory(c)}/>
+                                )}
+                                {!!categories[index].select && (
+                                    <Chip label={c.name} size="small"
+                                          sx={{boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;"}}
+                                          onDelete={() => rmCategory(c)}/>
+                                )}
+                            </Grid>
+                        )
+                    })}
                 </Grid>
-                {
-                    //Первый столбец товаров
-                }
-                <Grid item md={4}>
-                    <Stack>
-                        {goods?.map((g, index) => {
-                            return (index % 2 === 0 ?
-                                    <GoodsMapItem key={g.id} g={g} />
-                                    : null
-                            )
-
-                        })}
-                    </Stack>
-                </Grid>
-                {
-                    //Второй столбец товаров
-                }
-                <Grid item md={4}>
-                    <Stack>
-                        {goods?.map((g, index) => {
-                            return (index % 2 !== 0 ?
-                                    <GoodsMapItem key={g.id} g={g} />
-                                    : null
-                            )
-
-                        })}
-                    </Stack>
-                </Grid>
-                <Grid item xs={1} />
             </Grid>
+            {
+                //Первый столбец товаров
+            }
+            <Grid item md={4}>
+                <Stack>
+                    {goods?.map((g, index) => {
+                        return (index % 2 === 0 ?
+                                <GoodsMapItem key={g.id} g={g}/>
+                                : null
+                        )
+
+                    })}
+                </Stack>
+            </Grid>
+            {
+                //Второй столбец товаров
+            }
+            <Grid item md={4}>
+                <Stack>
+                    {goods?.map((g, index) => {
+                        return (index % 2 !== 0 ?
+                                <GoodsMapItem key={g.id} g={g}/>
+                                : null
+                        )
+
+                    })}
+                </Stack>
+            </Grid>
+            <Grid item xs={1}/>
+        </Grid>
     )
 }
 

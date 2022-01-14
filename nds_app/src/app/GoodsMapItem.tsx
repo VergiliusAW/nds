@@ -76,6 +76,7 @@ const GoodsMapItem: FC<IGoodsMapItem> = ({g}) => {
         const url = config.api.HOST + "/api/v1/cart/add"
         post(url, JSON.stringify(g))
     }
+
     return (
         <Grid item ref={wrapperRef}>
             <Card key={g.id} sx={{minWidth: 300, mb: 1.5}} onClick={handleExpand}>
