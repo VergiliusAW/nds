@@ -34,6 +34,32 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
     const [userInfo, setUserInfo] = useState<IUserInfo>()
     const [user, setUser] = useState<IUser>({givenName: "", familyName: ""})
     const [phoneError, setPhoneError] = useState(false)
+    const [nds, setNds] = useState<IStore>()
+    const [show, setShow] = useState(false)
+
+    /**
+     * Получить магазин для администратора
+     */
+    const fetchStore = async () => {
+        const url = config.api.HOST + "/api/v1/stores/store"
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${keycloak.token}`
+                },
+            });
+            const json: IStore = await response.json();
+            // console.log(json);
+            return json
+        } catch
+            (error) {
+            console.log("error", error);
+        }
+    }
+
     /**
      * Получить содержимое корзины
      */
@@ -49,7 +75,7 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                 },
             });
             const json = await response.json();
-            console.log(json);
+            // console.log(json);
             setCart(json)
         } catch
             (error) {
@@ -72,7 +98,7 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                 },
             });
             const json = await response.json();
-            console.log(json);
+            // console.log(json);
             setUserInfo(json)
         } catch
             (error) {
@@ -96,7 +122,7 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                 body: body
             });
             const json = await response.json();
-            console.log(json);
+            // console.log(json);
             setUserInfo(json)
         } catch
             (error) {
@@ -134,12 +160,34 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                     familyName: keycloak.tokenParsed.family_name
                 }
                 setUser(user)
-                console.log(user)
+                // console.log(user)
             }
             fetchCart()
             fetchUserInfo()
+            //@ts-ignore
+            if (keycloak.realmAccess.roles.includes("nds_store_manager")) {
+                fetchStore().then((s) => {
+                    if (s)
+                        setNds(s)
+                })
+            }
         }
     }, [auth])
+
+    useEffect(() => {
+        if (auth)
+            //@ts-ignore
+            if (keycloak.realmAccess.roles.includes("nds_store_manager")) {
+                fetchStore().then((s) => {
+                    setShow(false)
+                    if (s)
+                        if (s.id === store.id) {
+                            setNds(s)
+                            setShow(true)
+                        }
+                })
+            }
+    }, [store])
 
     const [no, setNo] = useState(false)
 
@@ -361,7 +409,12 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
                                     {userInfo?.phone !== null && (
                                         <TextField id="phone" label={userInfo?.phone} variant="standard" disabled/>
                                     )}
-                                    <Button onClick={handleOrder}>Оформить заказ</Button>
+                                    {!nds && (
+                                        <Button onClick={handleOrder}>Оформить заказ</Button>
+                                    )}
+                                    {nds && show && (
+                                        <Button onClick={handleOrder}>Продать</Button>
+                                    )}
                                 </Stack>
                             </Grid>
                             <Grid item md={1}/>

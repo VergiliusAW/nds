@@ -57,7 +57,7 @@ public class OrdersResourceV1 {
 
         for (CartGoods g : cartGoods) {
             var goods = entityManager
-                    .createQuery("select g from Goods g where (g.warehouse.id = '00000000-0000-0000-0000-000000000000' or g.warehouse.id = :s_id) and g.goodsLabel.id = :g_id ", Goods.class)
+                    .createQuery("select g from Goods g where (g.warehouse.id = '00000000-0000-0000-0000-000000000000' or g.warehouse.id = :s_id) and g.goodsLabel.id = :g_id order by g.warehouse.id desc", Goods.class)
                     .setParameter("g_id", g.getGoods().getId())
                     .setParameter("s_id", store.getWarehouse().getId())
                     .setFirstResult(0).setMaxResults(Math.toIntExact(g.getCount_goods())).getResultList();

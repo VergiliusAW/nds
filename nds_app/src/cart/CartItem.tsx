@@ -34,7 +34,7 @@ const CartItem: FC<ICartItem> = ({item, store, index, handleChangeCount, handleR
                 },
             });
             const json = await response.json();
-            console.log(json);
+            // console.log(json);
             setAva(json.available_count)
         } catch
             (error) {
@@ -58,7 +58,7 @@ const CartItem: FC<ICartItem> = ({item, store, index, handleChangeCount, handleR
                 },
             });
             const json = await response.json();
-            console.log(json);
+            // console.log(json);
             setAva(json.available_count)
         } catch
             (error) {

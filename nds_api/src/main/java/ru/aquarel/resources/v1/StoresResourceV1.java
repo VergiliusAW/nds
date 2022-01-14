@@ -82,7 +82,9 @@ public class StoresResourceV1 {
     @Path("/store")
     @Transactional
     public Response getStore() {
-        var store = entityManager.createQuery("select s from Stores s where s = :m_id", Stores.class).setParameter("m_id", UUID.fromString(jsonWebToken.getSubject())).getSingleResult();
+        var store = entityManager.createQuery("select s from Stores s where s.id_nds_manager = :m_id", Stores.class)
+                .setParameter("m_id", UUID.fromString(jsonWebToken.getSubject()))
+                .getSingleResult();
         return Response.ok(store).build();
     }
 
