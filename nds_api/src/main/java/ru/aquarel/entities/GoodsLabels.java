@@ -31,6 +31,7 @@ public class GoodsLabels {
 
     @Getter
     @Setter
+    @Column(columnDefinition="TEXT")
     private String description;
 
     @Getter

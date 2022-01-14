@@ -128,7 +128,7 @@ const StoreIssueComponent: FC = () => {
 
     return (
         <Stack justifyContent={"center"} spacing={2}>
-            <TextField id="standard-basic" label="Standard" variant="standard" value={id_order} onChange={(e) => {
+            <TextField id="standard-basic" label="uuid заказа" variant="standard" value={id_order} onChange={(e) => {
                 setId_order(e.target.value)
                 setVisible(true)
             }}/>

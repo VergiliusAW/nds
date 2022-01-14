@@ -10,13 +10,14 @@ import {
     Route
 } from "react-router-dom";
 import Settings from "./settings/Settings";
-import Admin from "./admin/Admin";
+import AdminOld from "./admin/AdminOld";
 import Store from "./store/Store";
 import Orders from "./order/Orders";
 import Warehouse from "./warehouse/Warehouse";
 import CartPage from "./cart/CartPage";
 import {Provider} from "react-redux";
 import store from "./redux/store";
+import Admin from "./admin/Admin";
 
 ReactDOM.render(
     <React.StrictMode>
