@@ -1,9 +1,9 @@
 import React, {FC} from "react";
-import {Button, Container} from "@mui/material";
 import Top from "../components/Top";
+import SettingsBody from "./SettingsBody";
 
 export interface IUserInfo {
-    id?:number
+    id?: number
     phone: string
 }
 
@@ -11,6 +11,7 @@ const Settings: FC = () => {
     return (
         <div>
             <Top/>
+            <SettingsBody/>
         </div>
     )
 }
