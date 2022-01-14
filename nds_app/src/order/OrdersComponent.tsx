@@ -2,8 +2,7 @@ import React, {FC, useEffect, useState} from "react";
 import {useKeycloak} from "@react-keycloak/web";
 import {IOrder} from "../warehouse/WarehouseNewOrders";
 import config from "../config";
-import TransitComponentMapItem from "../warehouse/TransitComponentMapItem";
-import {Button, Stack} from "@mui/material";
+import {Stack} from "@mui/material";
 import OrdersComponentMapItem from "./OrdersComponentMapItem";
 
 const OrdersComponent: FC = () => {
@@ -30,6 +29,10 @@ const OrdersComponent: FC = () => {
         return
     }
 
+    /**
+     * Отменить заказ
+     * @param body заказ
+     */
     const cancelOrderRequest = async (body: string) => {
         const url = config.api.HOST + "/api/v1/orders/order/cancel"
         try {
@@ -52,6 +55,10 @@ const OrdersComponent: FC = () => {
         return
     }
 
+    /**
+     * Отменить заказ
+     * @param order заказ
+     */
     const cancelOrder = (order: IOrder) => {
         cancelOrderRequest(JSON.stringify(order)).then(() => {
             fetchOrders().then((o) => {
@@ -66,7 +73,8 @@ const OrdersComponent: FC = () => {
                 setOrders(o)
             })
     }, [keycloak.authenticated])
-    return(
+
+    return (
         <>
             <Stack spacing={2}>
                 {orders?.map((o) => {

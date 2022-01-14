@@ -3,7 +3,7 @@ import {Grid, Paper} from "@mui/material";
 import OrdersContainer from "./OrdersContainer";
 
 const OrdersBody: FC = () => {
-    return(
+    return (
         <>
             <Grid container sx={{mt: "80px"}}>
                 <Grid item md={1}></Grid>

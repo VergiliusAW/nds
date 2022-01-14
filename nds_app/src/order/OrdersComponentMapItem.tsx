@@ -21,6 +21,9 @@ const OrdersComponentMapItem: FC<IOrdersComponentMapItem> = ({order, cancelOrder
     const [goods, setGoods] = useState<IGG[]>()
     const [status, setStatus] = useState<Status>()
 
+    /**
+     * Получить содержимое заказа
+     */
     const fetchOrderGoods = async () => {
         const pr = new URLSearchParams();
         pr.append("id_order", order.id)
@@ -54,14 +57,6 @@ const OrdersComponentMapItem: FC<IOrdersComponentMapItem> = ({order, cancelOrder
 
     useEffect(() => {
         setStatus(order.status)
-        // if (status !== undefined) {
-        //     const a = parseInt(Status[status])
-        //     const b = Status.CANCELED
-        //     console.log('a',a)
-        //     console.log('b',b)
-        //     console.log('compare', a === b)
-        // }
-        // console.log(status)
     }, [order.status, status])
 
     return (
