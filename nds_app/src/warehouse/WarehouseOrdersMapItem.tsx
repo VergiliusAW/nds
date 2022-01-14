@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import {IOrder} from "./WarehouseNewOrders";
-import {Accordion, AccordionDetails, AccordionSummary, Button, Paper, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Button, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import config from "../config";
 import {useKeycloak} from "@react-keycloak/web";
@@ -9,6 +9,7 @@ import {Goods} from "../app/NdsGoods";
 interface IWarehouseOrdersMapItem {
     order: IOrder
     fetchOrdersCallback: () => void
+    setState: (s: boolean) => void
 }
 
 interface IGG {
@@ -16,7 +17,7 @@ interface IGG {
     id: string
 }
 
-const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrdersCallback}) => {
+const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrdersCallback, setState}) => {
     const {keycloak} = useKeycloak()
     const [goods, setGoods] = useState<IGG[]>()
 
@@ -68,6 +69,7 @@ const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrders
     const markReady = () => {
         markOrderAsReadyToShipment(JSON.stringify(order)).then(() => {
             fetchOrdersCallback()
+            setState(true)
         })
     }
 

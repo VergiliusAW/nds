@@ -5,7 +5,7 @@ import ru.aquarel.entities.Categories;
 import ru.aquarel.entities.GoodsLabels;
 import ru.aquarel.entities.Stores;
 import ru.aquarel.entities.StoresWarehouses;
-import ru.aquarel.mtm.CategoriesGoods;
+import ru.aquarel.Pojos.CategoriesGoods;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;

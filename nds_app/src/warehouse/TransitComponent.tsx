@@ -3,19 +3,26 @@ import {useKeycloak} from "@react-keycloak/web";
 import config from "../config";
 import {IOrder} from "./WarehouseNewOrders";
 import {IStore} from "../cart/CartPage";
-import WarehouseOrdersMapItem from "./WarehouseOrdersMapItem";
 import {Button, Stack} from "@mui/material";
 import TransitComponentMapItem from "./TransitComponentMapItem";
 
 interface ITransitComponent {
-    store: IStore
+    store?: IStore
+    setState: (s: boolean) => void
+    state: boolean
 }
 
-const TransitComponent: FC<ITransitComponent> = ({store}) => {
+const TransitComponent: FC<ITransitComponent> = ({store, setState, state}) => {
     const {keycloak} = useKeycloak()
     const [orders, setOrders] = useState<IOrder[]>()
+
+    /**
+     * Получить заказы со статусом "Готов в отправке" для магазина
+     */
     const fetchReadyOrders = async () => {
         const pr = new URLSearchParams();
+        if (store === undefined)
+            return
         pr.append("id_store", store.id)
         const url = config.api.HOST + "/api/v1/main/orders/store/ready?" + pr.toString()
         try {
@@ -37,6 +44,10 @@ const TransitComponent: FC<ITransitComponent> = ({store}) => {
         return
     }
 
+    /**
+     * Отправить заказы в магазин
+     * @param body магазин
+     */
     const sendOrdersToStore = async (body: string) => {
         const url = config.api.HOST + "/api/v1/main/orders/transit"
         try {
@@ -59,6 +70,9 @@ const TransitComponent: FC<ITransitComponent> = ({store}) => {
         return
     }
 
+    /**
+     * Отправить заказы в магазин
+     */
     const ordersToStore = () => {
         sendOrdersToStore(JSON.stringify(store)).then(() => {
             fetchReadyOrders().then((o) => {
@@ -68,13 +82,14 @@ const TransitComponent: FC<ITransitComponent> = ({store}) => {
     }
 
     useEffect(() => {
-        if (keycloak.authenticated)
+        if (!!keycloak.authenticated && store !== undefined)
             fetchReadyOrders().then((o) => {
                 setOrders(o)
+                setState(!state)
             })
-    }, [store, keycloak.authenticated])
+    }, [state, store])
 
-    return(
+    return (
         <>
             <Stack spacing={2}>
                 {orders?.map((o) => {

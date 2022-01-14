@@ -1,14 +1,13 @@
 import React, {FC, useEffect, useState} from "react";
 import {IStore} from "../cart/CartPage";
 import config from "../config";
-import {Goods} from "../app/NdsGoods";
 import {useKeycloak} from "@react-keycloak/web";
 import {Stack} from "@mui/material";
 import WarehouseOrdersMapItem from "./WarehouseOrdersMapItem";
-import {pseudoRandomBytes} from "crypto";
 
 interface IWarehouseNewOrders {
-    store: IStore
+    store?: IStore
+    setState: (s: boolean) => void
 }
 
 export enum Status {
@@ -51,11 +50,16 @@ export interface IOrder {
     last_change_date: Date
 }
 
-const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store}) => {
+const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store, setState}) => {
     const {keycloak} = useKeycloak()
     const [orders, setOrders] = useState<IOrder[]>()
+    /**
+     * Получить новые заказы
+     */
     const fetchNewOrders = async () => {
         const pr = new URLSearchParams();
+        if (store === undefined)
+            return
         pr.append("id_store", store.id)
         const url = config.api.HOST + "/api/v1/main/orders/store/new?" + pr.toString()
         try {
@@ -77,6 +81,9 @@ const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store}) => {
         return
     }
 
+    /**
+     * callback на получение новых заказов
+     */
     const fetchOrdersCallback = () => {
         fetchNewOrders().then((o) => {
             setOrders(o)
@@ -84,7 +91,7 @@ const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store}) => {
     }
 
     useEffect(() => {
-        if (keycloak.authenticated)
+        if (keycloak.authenticated && store !== undefined)
             fetchNewOrders().then((o) => {
                 setOrders(o)
             })
@@ -95,7 +102,8 @@ const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store}) => {
             <Stack spacing={2}>
                 {orders?.map((o) => {
                     return (
-                        <WarehouseOrdersMapItem key={o.id} order={o} fetchOrdersCallback={fetchOrdersCallback}/>
+                        <WarehouseOrdersMapItem key={o.id} order={o} fetchOrdersCallback={fetchOrdersCallback}
+                                                setState={setState}/>
                     )
                 })}
             </Stack>

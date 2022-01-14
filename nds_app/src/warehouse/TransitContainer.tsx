@@ -3,12 +3,17 @@ import {IStore} from "../cart/CartPage";
 import StoreChoose from "../cart/StoreChoose";
 import TransitComponent from "./TransitComponent";
 
-const TransitContainer:FC = () => {
-    const [store, setStore] = useState<IStore>({id: "", address: ""})
-    return(
+interface ITransitContainer {
+    setState: (s: boolean) => void
+    state: boolean
+}
+
+const TransitContainer: FC<ITransitContainer> = ({setState, state}) => {
+    const [store, setStore] = useState<IStore>()
+    return (
         <>
             <StoreChoose setStore={setStore}/>
-            <TransitComponent store={store}/>
+            <TransitComponent store={store} setState={setState} state={state}/>
         </>
     )
 }

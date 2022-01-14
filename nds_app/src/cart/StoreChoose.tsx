@@ -37,30 +37,29 @@ const StoreChoose: FC<IStoreChoose> = ({setStore}) => {
         }
     }
 
-    const fetchStore = async () => {
-        const url = config.api.HOST + "/api/v1/stores/store"
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${keycloak.token}`
-                },
-            });
-            const json = await response.json();
-            console.log(json);
-            setStore(json)
-            // setStores((prev) => [[],json])
-        } catch
-            (error) {
-            console.log("error", error);
-        }
-    }
+    // const fetchStore = async () => {
+    //     const url = config.api.HOST + "/api/v1/stores/store"
+    //     try {
+    //         const response = await fetch(url, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${keycloak.token}`
+    //             },
+    //         });
+    //         const json = await response.json();
+    //         console.log(json);
+    //         setStore(json)
+    //         // setStores((prev) => [[],json])
+    //     } catch
+    //         (error) {
+    //         console.log("error", error);
+    //     }
+    // }
 
     useEffect(() => {
         fetchStores()
-
     }, [])
 
     useEffect(() => {

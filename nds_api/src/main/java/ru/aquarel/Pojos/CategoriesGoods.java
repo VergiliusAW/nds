@@ -1,4 +1,4 @@
-package ru.aquarel.mtm;
+package ru.aquarel.Pojos;
 
 import lombok.Getter;
 import lombok.Setter;

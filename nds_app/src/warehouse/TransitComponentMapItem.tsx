@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from "react";
-import {Accordion, AccordionDetails, AccordionSummary, Button, Typography} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {Goods} from "../app/NdsGoods";
 import {IOrder} from "./WarehouseNewOrders";
@@ -50,7 +50,7 @@ const TransitComponentMapItem: FC<ITransitComponentMapItem> = ({order}) => {
             })
     }, [keycloak.authenticated])
 
-    return(
+    return (
         <Accordion>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon/>}

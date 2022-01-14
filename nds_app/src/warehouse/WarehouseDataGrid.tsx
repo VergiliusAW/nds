@@ -7,8 +7,6 @@ import {Goods} from "../app/NdsGoods";
 import {Button, IconButton, Paper, Stack, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const options = ['Option 1', 'Option 2'];
-
 interface AG {
     goods: Goods
     count: number
@@ -21,13 +19,15 @@ interface AC {
 const WarehouseDataGrid: FC = () => {
     const {keycloak} = useKeycloak()
     const [auth, setAuth] = useState(false)
-    const [goods, setGoods] = useState<string[]>([])
     const [goodsLabels, setGoodsLabels] = useState<Goods[]>([])
     const [newGoods, setNewGoods] = useState<AG[]>([])
     const [value, setValue] = useState<number>(0);
 
-    const [inputValue, setInputValue] = React.useState('');
+    const [inputValue, setInputValue] = useState<Goods>();
 
+    /**
+     * Получить все товары
+     */
     const fetchGoods = async () => {
         const url = config.api.HOST + "/api/v1/public/goods/all"
         try {
@@ -49,6 +49,10 @@ const WarehouseDataGrid: FC = () => {
         return
     }
 
+    /**
+     * Принять товары на склад
+     * @param body товары
+     */
     const postGoods = async (body: string) => {
         const url = config.api.HOST + "/api/v1/main/accept"
         try {
@@ -72,21 +76,20 @@ const WarehouseDataGrid: FC = () => {
     }
 
     /**
-     *
+     * добавить товар в список на приёмку
      */
     const handleAdd = () => {
-        const s = inputValue.split("|")
-        //index
-        const i = parseInt(s[0])
-        const item: AG = {
-            goods: goodsLabels[i],
-            count: value
+        if (inputValue !== undefined) {
+            const item: AG = {
+                goods: inputValue,
+                count: value
+            }
+            setNewGoods((prev) => [...prev, item])
         }
-        setNewGoods((prev) => [...prev, item])
     }
 
     /**
-     *
+     * Удалить товар из списка на приёмку
      * @param idx
      */
     const handleDel = (idx: number) => {
@@ -98,7 +101,7 @@ const WarehouseDataGrid: FC = () => {
     }
 
     /**
-     *
+     * Принять товары
      */
     const handleAccept = async () => {
         const d: AC[] = []
@@ -109,7 +112,7 @@ const WarehouseDataGrid: FC = () => {
         })
         await postGoods(JSON.stringify(d))
         setNewGoods([])
-        setInputValue("")
+        setInputValue(undefined)
         setValue(0)
     }
 
@@ -121,10 +124,6 @@ const WarehouseDataGrid: FC = () => {
             fetchGoods().then((res) => {
                 if (res) {
                     setGoodsLabels(res)
-                    const gl = res.map<string>((g, index) => {
-                        return index + "|" + g.name
-                    })
-                    setGoods(gl)
                 }
             })
     }, [auth])
@@ -139,14 +138,16 @@ const WarehouseDataGrid: FC = () => {
 
     return (
         <>
-            <Paper elevation={3} sx={{p: 2, mb:2}}>
+            <Paper elevation={3} sx={{p: 2, mb: 2}}>
                 <Stack direction={"row"} spacing={2}>
                     <Autocomplete
-                        inputValue={inputValue}
-                        onInputChange={(event, newInputValue) => {
-                            setInputValue(newInputValue);
+                        onChange={(event, newInputValue) => {
+                            console.log(newInputValue)
+                            if (newInputValue !== null)
+                                setInputValue(newInputValue);
                         }}
-                        options={goods}
+                        options={goodsLabels}
+                        getOptionLabel={option => option.name}
                         sx={{width: 300}}
                         renderInput={(params) => <TextField {...params} label="Товар"/>}
                     />
@@ -162,7 +163,7 @@ const WarehouseDataGrid: FC = () => {
             <Stack spacing={2}>
                 {newGoods.map((g, index) => {
                     return (
-                        <Stack direction={"row"} spacing={2} justifyContent={"left"} alignItems={"center"}>
+                        <Stack key={index} direction={"row"} spacing={2} justifyContent={"left"} alignItems={"center"}>
                             <IconButton aria-label="delete" color={"error"} onClick={() => handleDel(index)}>
                                 <DeleteIcon/>
                             </IconButton>
