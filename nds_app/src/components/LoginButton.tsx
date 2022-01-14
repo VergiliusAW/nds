@@ -6,6 +6,7 @@ import Logout from '@mui/icons-material/Logout';
 import {LocalAtm} from "@mui/icons-material";
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
+import {Link} from "react-router-dom";
 
 interface IUser {
     givenName: string
@@ -34,25 +35,6 @@ const LoginButton: FC = () => {
         }
     }, [keycloak.authenticated])
 
-    const settingsHandle = () => {
-        window.location.replace("/settings")
-    }
-
-    const adminHandle = () => {
-        window.location.replace("/admin")
-    }
-
-    const warehouseHandle = () => {
-        window.location.replace("/warehouse")
-    }
-
-    const storeHandle = () => {
-        window.location.replace("/store")
-    }
-
-    const ordersHandle = () => {
-        window.location.replace("/orders")
-    }
     return (
         <div>
             {!keycloak.authenticated && (
@@ -114,7 +96,7 @@ const LoginButton: FC = () => {
                                 && !keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager")
                                 //@ts-ignore
                                 && !keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager")) && (
-                                <MenuItem onClick={ordersHandle}>
+                                <MenuItem component={Link} to={"/orders"}>
                                     <ListItemIcon>
                                         <LocalAtm fontSize="small"/>
                                     </ListItemIcon>
@@ -129,7 +111,7 @@ const LoginButton: FC = () => {
                                 && !keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager")
                                 //@ts-ignore
                                 && !keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager")) && (
-                                <MenuItem onClick={settingsHandle}>
+                                <MenuItem component={Link} to={"/settings"}>
                                     <ListItemIcon>
                                         <Settings fontSize="small"/>
                                     </ListItemIcon>
@@ -139,7 +121,7 @@ const LoginButton: FC = () => {
                         }
                         {   //@ts-ignore
                             keycloak.tokenParsed.realm_access.roles.includes("nds_god") && (
-                                <MenuItem onClick={adminHandle}>
+                                <MenuItem component={Link} to={"/admin"}>
                                     <ListItemIcon>
                                         <LocalAtm fontSize="small"/>
                                     </ListItemIcon>
@@ -149,7 +131,7 @@ const LoginButton: FC = () => {
                         }
                         {   //@ts-ignore
                             keycloak.tokenParsed.realm_access.roles.includes("nds_store_manager") && (
-                                <MenuItem onClick={storeHandle}>
+                                <MenuItem component={Link} to={"/store"}>
                                     <ListItemIcon>
                                         <LocationCityIcon fontSize="small"/>
                                     </ListItemIcon>
@@ -159,7 +141,7 @@ const LoginButton: FC = () => {
                         }
                         {   //@ts-ignore
                             keycloak.tokenParsed.realm_access.roles.includes("nds_warehouse_manager") && (
-                                <MenuItem onClick={warehouseHandle}>
+                                <MenuItem component={Link} to={"/warehouse"}>
                                     <ListItemIcon>
                                         <WarehouseIcon fontSize="small"/>
                                     </ListItemIcon>

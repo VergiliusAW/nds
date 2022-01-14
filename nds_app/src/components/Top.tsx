@@ -1,34 +1,24 @@
-import {
-    Grid,
-    Button,
-    CircularProgress,
-    Typography,
-    AppBar,
-    Toolbar,
-    Container,
-    MenuItem,
-    ListItemIcon
-} from "@mui/material";
+import {AppBar, Grid, Toolbar} from "@mui/material";
 import React, {FC} from "react";
 import LoginButton from "./LoginButton";
 import {useKeycloak} from "@react-keycloak/web";
 import Cart from "./Cart";
-import Settings from "@mui/icons-material/Settings";
+import {Link} from "react-router-dom";
 
 const Top: FC = () => {
     const {keycloak} = useKeycloak()
-    const handleLogo = () => {
-        window.location.replace("/")
-    }
+
     return (
         <AppBar color="inherit">
             <Toolbar>
                 <Grid container item xs={1} justifyContent="right" alignItems="center">
                 </Grid>
-                <Grid container item xs={1} justifyContent="right" alignItems="center" onClick={handleLogo}
+                <Grid container item xs={1} justifyContent="right" alignItems="center"
                       sx={{cursor: "pointer"}}>
-                    <img src="https://cloud.krista.ru/index.php/s/w5NX0e4zbXXhDZS/download" alt="logo"
-                         style={{width: "100%"}}/>
+                    <Link to={"/"}>
+                        <img src="https://cloud.krista.ru/index.php/s/w5NX0e4zbXXhDZS/download" alt="logo"
+                             style={{width: "100%"}}/>
+                    </Link>
                 </Grid>
                 <Grid container item xs={7} justifyContent="right" alignItems="center">
                 </Grid>

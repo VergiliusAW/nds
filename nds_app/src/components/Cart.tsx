@@ -8,6 +8,7 @@ import config from "../config";
 import {setState} from "../redux/cartCountSlice";
 import {useKeycloak} from "@react-keycloak/web";
 import {isNumber} from "util";
+import {Link} from "react-router-dom";
 
 /**
  * Отображается только когда клиент вошел в свой аккаунт
@@ -27,9 +28,6 @@ const Cart: FC = () => {
             padding: '0 4px',
         },
     }));
-    const handleCart = () => {
-        window.location.replace("/cart")
-    }
 
     const fetchCount = useCallback(async () => {
         const url = config.api.HOST + "/api/v1/cart/goods/count"
@@ -61,11 +59,14 @@ const Cart: FC = () => {
     }, [fetchCount])
 
     return (
-        <IconButton aria-label="cart" onClick={handleCart}>
-            <StyledBadge badgeContent={count} color="primary">
-                <ShoppingCartIcon/>
-            </StyledBadge>
-        </IconButton>)
+        <Link to={"/cart"}>
+            <IconButton aria-label="cart">
+                <StyledBadge badgeContent={count} color="primary">
+                    <ShoppingCartIcon/>
+                </StyledBadge>
+            </IconButton>
+        </Link>
+    )
 }
 
 export default Cart
