@@ -17,6 +17,10 @@ const StoreIssueComponent: FC = () => {
     const [order, setOrder] = useState<IOrder>()
     const [visible, setVisible] = useState(true)
 
+    /**
+     * Получить заказ(со статусом новый)
+     * @param id_o id заказа
+     */
     const getOrder = async (id_o: string) => {
         const pr = new URLSearchParams();
         pr.append("id_order", id_o)
@@ -40,6 +44,10 @@ const StoreIssueComponent: FC = () => {
         return
     }
 
+    /**
+     * Получить содержимое заказа
+     * @param id_o id  заказа
+     */
     const getGoods = async (id_o: string) => {
         const pr = new URLSearchParams();
         pr.append("id_order", id_o)
@@ -63,6 +71,10 @@ const StoreIssueComponent: FC = () => {
         return
     }
 
+    /**
+     * Выдать заказ
+     * @param body заказ
+     */
     const issueAnOrder = async (body: string) => {
         const url = config.api.HOST + "/api/v1/stores/issue"
         try {
@@ -85,6 +97,9 @@ const StoreIssueComponent: FC = () => {
         return
     }
 
+    /**
+     * Показать заказ
+     */
     const show = async () => {
         getOrder(id_order).then((o) => {
             if (o !== undefined)
@@ -99,6 +114,9 @@ const StoreIssueComponent: FC = () => {
         })
     }
 
+    /**
+     * Выдать заказ
+     */
     const issue = async () => {
         issueAnOrder(JSON.stringify(order)).then((o) => {
             console.log(o)
