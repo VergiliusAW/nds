@@ -7,7 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import config from "../config";
 import {setState} from "../redux/cartCountSlice";
 import {useKeycloak} from "@react-keycloak/web";
-import {isNumber} from "util";
 import {Link} from "react-router-dom";
 
 /**
