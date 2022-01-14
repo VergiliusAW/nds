@@ -85,7 +85,6 @@ const TransitComponent: FC<ITransitComponent> = ({store, setState, state}) => {
         if (!!keycloak.authenticated && store !== undefined)
             fetchReadyOrders().then((o) => {
                 setOrders(o)
-                setState(!state)
             })
     }, [state, store])
 

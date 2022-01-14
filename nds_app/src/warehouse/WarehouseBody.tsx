@@ -21,7 +21,7 @@ const WarehouseBody: FC = () => {
                 <Grid item md={1}/>
                 <Grid item md={10}>
                     <Paper elevation={3} sx={{p: 2}}>
-                        <WarehouseNewOrdersContainer setState={setState}/>
+                        <WarehouseNewOrdersContainer state={state} setState={setState}/>
                     </Paper>
                 </Grid>
                 <Grid item md={1}/>

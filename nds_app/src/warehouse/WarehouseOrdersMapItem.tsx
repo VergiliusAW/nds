@@ -10,6 +10,7 @@ interface IWarehouseOrdersMapItem {
     order: IOrder
     fetchOrdersCallback: () => void
     setState: (s: boolean) => void
+    state: boolean
 }
 
 interface IGG {
@@ -17,7 +18,7 @@ interface IGG {
     id: string
 }
 
-const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrdersCallback, setState}) => {
+const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrdersCallback, setState, state}) => {
     const {keycloak} = useKeycloak()
     const [goods, setGoods] = useState<IGG[]>()
 
@@ -69,7 +70,7 @@ const WarehouseOrdersMapItem: FC<IWarehouseOrdersMapItem> = ({order, fetchOrders
     const markReady = () => {
         markOrderAsReadyToShipment(JSON.stringify(order)).then(() => {
             fetchOrdersCallback()
-            setState(true)
+            setState(!state)
         })
     }
 

@@ -8,6 +8,7 @@ import WarehouseOrdersMapItem from "./WarehouseOrdersMapItem";
 interface IWarehouseNewOrders {
     store?: IStore
     setState: (s: boolean) => void
+    state: boolean
 }
 
 export enum Status {
@@ -50,7 +51,7 @@ export interface IOrder {
     last_change_date: Date
 }
 
-const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store, setState}) => {
+const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store, setState, state}) => {
     const {keycloak} = useKeycloak()
     const [orders, setOrders] = useState<IOrder[]>()
     /**
@@ -103,7 +104,7 @@ const WarehouseNewOrders: FC<IWarehouseNewOrders> = ({store, setState}) => {
                 {orders?.map((o) => {
                     return (
                         <WarehouseOrdersMapItem key={o.id} order={o} fetchOrdersCallback={fetchOrdersCallback}
-                                                setState={setState}/>
+                                                setState={setState} state={state}/>
                     )
                 })}
             </Stack>

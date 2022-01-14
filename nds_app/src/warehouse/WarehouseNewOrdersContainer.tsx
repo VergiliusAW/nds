@@ -5,14 +5,15 @@ import WarehouseNewOrders from "./WarehouseNewOrders";
 
 interface IWarehouseNewOrdersContainer {
     setState: (s: boolean) => void
+    state: boolean
 }
 
-const WarehouseNewOrdersContainer: FC<IWarehouseNewOrdersContainer> = ({setState}) => {
+const WarehouseNewOrdersContainer: FC<IWarehouseNewOrdersContainer> = ({setState, state}) => {
     const [store, setStore] = useState<IStore>()
     return (
         <>
             <StoreChoose setStore={setStore}/>
-            <WarehouseNewOrders store={store} setState={setState}/>
+            <WarehouseNewOrders store={store} setState={setState} state={state}/>
         </>
     )
 }
