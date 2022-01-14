@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useKeycloak} from "@react-keycloak/web";
 import config from "../config";
 import {ICartGoods, IStore} from "./CartPage";
-import {Button, Container, Grid, Paper, Stack, TextField, Typography} from "@mui/material";
+import {Button, Grid, Paper, Stack, TextField, Typography} from "@mui/material";
 import CartItem from "./CartItem";
 import {IUserInfo} from "../settings/Settings";
 import StoreChoose from "./StoreChoose";
@@ -125,10 +125,6 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
         if (keycloak.authenticated)
             setAuth(true)
     }, [keycloak.authenticated])
-
-    // useEffect(() => {
-    //     console.log(cart)
-    // }, [cart])
 
     useEffect(() => {
         if (auth) {
@@ -252,6 +248,11 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
     }
 
 
+    /**
+     * Изменить количество товара в корзине
+     * @param count количество
+     * @param item товар
+     */
     const postChangeCount = async (count: number, item: string) => {
         const url = config.api.HOST + "/api/v1/cart/change?count=" + count
         try {
@@ -289,6 +290,11 @@ const CartBody: FC<ICartBody> = ({store, setStore}) => {
         }
     }
 
+    /**
+     * post запрос с токеном
+     * @param url
+     * @param body
+     */
     const post = async (url: string, body: string) => {
         try {
             const response = await fetch(url, {

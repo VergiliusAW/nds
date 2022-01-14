@@ -1,23 +1,8 @@
 import React, {FC, useEffect, useState} from "react";
 import {ICartGoods, IStore} from "./CartPage";
-import {
-    Button,
-    Card,
-    ButtonGroup,
-    CardContent,
-    Collapse,
-    Grid,
-    Typography,
-    IconButton,
-    Stack,
-    Container, Paper, CardActions
-} from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import DeleteIcon from '@mui/icons-material/Delete';
+import {Button, Card, CardActions, CardContent, Grid, Typography} from "@mui/material";
 //@ts-ignore
 import CounterInput from "react-counter-input";
-import {Grid3x3Outlined} from "@mui/icons-material";
 import config from "../config";
 import {useKeycloak} from "@react-keycloak/web";
 
@@ -101,7 +86,7 @@ const CartItem: FC<ICartItem> = ({item, store, index, handleChangeCount, handleR
                     Цена: {item.goods.price} у.е.
                 </Typography>
                 <Typography variant="caption" display="block" gutterBottom
-                            color={item.count_goods > ava? "error": ""}>
+                            color={item.count_goods > ava ? "error" : ""}>
                     В наличии: {ava}
                 </Typography>
             </CardContent>
