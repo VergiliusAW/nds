@@ -1,6 +1,13 @@
 package ru.aquarel.resources.v1;
 
 import io.vertx.core.json.JsonObject;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import ru.aquarel.entities.Cart;
 import ru.aquarel.entities.GoodsLabels;
@@ -9,17 +16,10 @@ import ru.aquarel.entities.Users;
 import ru.aquarel.mtm.CartGoods;
 import ru.aquarel.mtm.CartGoodsId;
 
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.UUID;
 
 @Path("/api/v1/cart")
-@RolesAllowed({"nds_user","nds_store_manager"})
+@RolesAllowed({"nds_user", "nds_store_manager"})
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CartResourceV1 {

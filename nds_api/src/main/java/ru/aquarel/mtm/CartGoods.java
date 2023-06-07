@@ -5,7 +5,7 @@ import lombok.Setter;
 import ru.aquarel.entities.Cart;
 import ru.aquarel.entities.GoodsLabels;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cart_goods")

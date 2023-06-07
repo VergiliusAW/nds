@@ -1,18 +1,18 @@
 package ru.aquarel.resources.v1;
 
 import io.vertx.core.json.JsonObject;
+import jakarta.annotation.security.PermitAll;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import ru.aquarel.entities.Categories;
 import ru.aquarel.entities.Goods;
 import ru.aquarel.entities.GoodsLabels;
 import ru.aquarel.entities.Stores;
 
-import javax.annotation.security.PermitAll;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.UUID;
 
